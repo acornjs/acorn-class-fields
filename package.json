@@ -1,0 +1,32 @@
+{
+  "name": "acorn-class-fields",
+  "description": "Support for class fields in acorn",
+  "homepage": "https://github.com/acornjs/acorn-class-fields",
+  "contributors": [
+    "Adrian Heine <mail@adrianheine.de>"
+  ],
+  "engines": {
+    "node": ">=4.8.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/acornjs/acorn-class-fields"
+  },
+  "license": "AGPL-3.0",
+  "scripts": {
+    "test": "mocha",
+    "test:test262": "node run_test262.js",
+    "lint": "eslint -c .eslintrc.json ."
+  },
+  "dependencies": {
+    "acorn": "^5.3.0"
+  },
+  "version": "0.1.0",
+  "devDependencies": {
+    "eslint": "^4.13.1",
+    "eslint-plugin-node": "^5.2.1",
+    "mocha": "^4.0.1",
+    "test262": "git+https://github.com/tc39/test262.git#66df349af32c3f293936f7a947ac18bfb1ecda5c",
+    "test262-parser-runner": "^0.2.0"
+  }
+}
