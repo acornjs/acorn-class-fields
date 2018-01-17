@@ -1,5 +1,7 @@
 "use strict"
 
+const skipWhiteSpace = /(?:\s|\/\/.*|\/\*[^]*?\*\/)*/g
+
 module.exports = function (acorn) {
   const acornVersion = acorn.version.match(/^5\.(\d+)\./)
   if (!acornVersion || Number(acornVersion[1]) < 3) {
@@ -54,7 +56,25 @@ module.exports = function (acorn) {
     instance.extend("parseClassMember", superF => function (classBody) {
       if (this.eat(tt.semi)) return null
       const node = this.startNode()
-      if (!(this.options.ecmaVersion >= 8) || !this.eat(hashToken)) return superF.call(this, classBody)
+      if (!(this.options.ecmaVersion >= 8) || !this.eat(hashToken)) {
+        // Special-case for `async`, since `parseClassMember` currently looks
+        // for `(` to determine whether `async` is a method name
+        if (this.isContextual("async")) {
+          skipWhiteSpace.lastIndex = this.pos
+          let skip = skipWhiteSpace.exec(this.input)
+          let next = this.input.charAt(this.pos + skip[0].length)
+          if (next === ";" || next === "=") {
+            node.key = this.parseIdent(true)
+            node.computed = false
+            maybeParseFieldValue.call(this, node)
+            this.finishNode(node, "FieldDefinition")
+            classBody.body.push(node)
+            this.semicolon()
+            return node
+          }
+        }
+        return superF.call(this, classBody)
+      }
       node.key = this.parseIdent(true)
       node.key.type = "PrivateName"
       node.computed = false

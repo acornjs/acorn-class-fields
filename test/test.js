@@ -338,6 +338,39 @@ describe("acorn-class-fields", function () {
       }
     }) },
 
+    { body: "async", passes: true, ast: start => ({
+      type: "FieldDefinition",
+      start: start,
+      end: start + 5,
+      key: {
+        type: "Identifier",
+        start: start,
+        end: start + 5,
+        name: "async"
+      },
+      value: null,
+      computed: false
+    }) },
+
+    { body: "async = 5", passes: true, ast: start => ({
+      type: "FieldDefinition",
+      start: start,
+      end: start + 9,
+      key: {
+        type: "Identifier",
+        start: start,
+        end: start + 5,
+        name: "async"
+      },
+      value: {
+        type: "Literal",
+        start: 18,
+        end: 19,
+        raw: "5",
+        value: 5
+      },
+      computed: false
+    }) },
   ].forEach(bodyInput => {
     const body = bodyInput.body, passes = bodyInput.passes, bodyAst = bodyInput.ast
     classes.forEach(input => {
