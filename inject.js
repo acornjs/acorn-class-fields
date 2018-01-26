@@ -10,7 +10,7 @@ module.exports = function (acorn) {
 
   const tt = acorn.tokTypes
 
-  const hashToken = new acorn.TokenType("#")
+  const privateNameToken = new acorn.TokenType("privateName")
 
   function maybeParseFieldValue(field) {
     if (this.eat(tt.eq)) {
@@ -21,12 +21,22 @@ module.exports = function (acorn) {
     } else field.value = null
   }
 
+  function parsePrivateName() {
+    const node = this.startNode()
+    node.name = this.value
+    this.next()
+    this.finishNode(node, "PrivateName")
+    if (this.options.allowReserved == "never") this.checkUnreserved(node)
+    return node
+  }
+
   acorn.plugins.classFields = function (instance) {
     // Parse # token
     instance.extend("getTokenFromCode", superF => function (code) {
       if (code === 35) {
         ++this.pos
-        return this.finishToken(hashToken)
+        const word = this.readWord1()
+        return this.finishToken(privateNameToken, word)
       }
       return superF.call(this, code)
     })
@@ -56,7 +66,7 @@ module.exports = function (acorn) {
     instance.extend("parseClassMember", superF => function (classBody) {
       if (this.eat(tt.semi)) return null
       const node = this.startNode()
-      if (!(this.options.ecmaVersion >= 8) || !this.eat(hashToken)) {
+      if (!(this.options.ecmaVersion >= 8) || this.type != privateNameToken) {
         // Special-case for `async`, since `parseClassMember` currently looks
         // for `(` to determine whether `async` is a method name
         if (this.isContextual("async")) {
@@ -75,8 +85,7 @@ module.exports = function (acorn) {
         }
         return superF.call(this, classBody)
       }
-      node.key = this.parseIdent(true)
-      node.key.type = "PrivateName"
+      node.key = parsePrivateName.call(this)
       node.computed = false
       if (node.key.name == "constructor") this.raise(node.start, "Classes may not have a field named constructor")
       if (Object.prototype.hasOwnProperty.call(this._privateBoundNamesStack[this._privateBoundNamesStack.length - 1], node.key.name)) this.raise(node.start, "Duplicate private element")
@@ -111,9 +120,8 @@ module.exports = function (acorn) {
           node.object = base
           if (computed) {
             node.property = this.parseExpression()
-          } else if (this.eat(hashToken)) {
-            node.property = this.parseIdent(true)
-            node.property.type = "PrivateName"
+          } else if (this.type == privateNameToken) {
+            node.property = parsePrivateName.call(this)
             if (!this._privateBoundNamesStack.length || !this._privateBoundNamesStack[this._privateBoundNamesStack.length - 1][node.property.name]) {
               this._unresolvedPrivateNamesStack[this._unresolvedPrivateNamesStack.length - 1][node.property.name] = node.property.start
             }

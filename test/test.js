@@ -52,12 +52,14 @@ describe("acorn-class-fields", function () {
 
   testFail("class A { #a; f() { delete this.#a } }", "Private elements may not be deleted (1:20)")
   testFail("class A { #a; #a }", "Duplicate private element (1:14)")
-  testFail("class A { a = this.#a }", "Usage of undeclared private name (1:20)")
-  testFail("class A { a = this.#a; b = this.#b }", "Usage of undeclared private name (1:20)")
+  testFail("class A { a = this.#a }", "Usage of undeclared private name (1:19)")
+  testFail("class A { a = this.#a; b = this.#b }", "Usage of undeclared private name (1:19)")
   testFail("class A { constructor = 4 }", "Unexpected token (1:22)")
   testFail("class A { #constructor = 4 }", "Classes may not have a field named constructor (1:10)")
   testFail("class A { a = () => arguments }", "A class field initializer may not contain arguments (1:20)")
   testFail("class A { a = () => super() }", "A class field initializer may not contain super (1:20)")
+  testFail("class A { # a }", "Unexpected token (1:12)")
+  testFail("class A { #a; a() { this.# a } }", "Unexpected token (1:27)")
 
   const classes = [
     { text: "class A { %s }", ast: getBody => {
@@ -125,7 +127,7 @@ describe("acorn-class-fields", function () {
             end: body.end + 4,
             key: {
               type: "PrivateName",
-              start: body.end + 3,
+              start: body.end + 2,
               end: body.end + 4,
               name: "y"
             },
@@ -312,7 +314,7 @@ describe("acorn-class-fields", function () {
       computed: false,
       key: {
         type: "PrivateName",
-        start: start + 1,
+        start: start,
         end: start + 2,
         name: "x"
       },
@@ -325,7 +327,7 @@ describe("acorn-class-fields", function () {
       computed: false,
       key: {
         type: "PrivateName",
-        start: start + 1,
+        start: start,
         end: start + 2,
         name: "x"
       },
