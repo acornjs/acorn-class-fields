@@ -6,10 +6,7 @@ const run = require("test262-parser-runner")
 const parse = require(".").parse
 
 const unsupportedFeatures = [
-  "async-iteration",
   "BigInt",
-  "object-rest",
-  "object-spread",
   "optional-catch-binding",
   "regexp-lookbehind",
   "regexp-named-groups",
