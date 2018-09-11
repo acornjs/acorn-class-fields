@@ -18,11 +18,12 @@
     "test:test262": "node run_test262.js",
     "lint": "eslint -c .eslintrc.json ."
   },
-  "dependencies": {
-    "acorn": "^5.4.1"
+  "peerDependencies": {
+    "acorn": "^6.0.0"
   },
   "version": "0.1.2",
   "devDependencies": {
+    "acorn": "^6.0.0",
     "eslint": "^4.13.1",
     "eslint-plugin-node": "^6.0.0",
     "mocha": "^5.0.0",
