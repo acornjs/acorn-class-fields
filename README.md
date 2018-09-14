@@ -8,24 +8,12 @@ It implements support for class fields as defined in the stage 3 proposal [Class
 
 ## Usage
 
-You can use this module directly in order to get an Acorn instance with the plugin installed:
+This module provides a plugin that can be used to extend the Acorn `Parser` class:
 
 ```javascript
-var acorn = require('acorn-class-fields');
-```
-
-Or you can use `inject.js` for injecting the plugin into your own version of Acorn like this:
-
-```javascript
-var acorn = require('acorn-class-fields/inject')(require('./custom-acorn'));
-```
-
-Then, use the `plugins` option to enable the plugiin:
-
-```javascript
-var ast = acorn.parse(code, {
-  plugins: { classFields: true }
-});
+const {Parser} = require('acorn');
+const classFields = require('acorn-class-fields');
+Parser.extend(classFields).parse('class X { x = 0 }');
 ```
 
 ## License
