@@ -2,7 +2,9 @@
 
 const skipWhiteSpace = /(?:\s|\/\/.*|\/\*[^]*?\*\/)*/g
 
-const {tokTypes: tt, TokenType} = require("acorn")
+const acorn = require("acorn")
+const tt = acorn.tokTypes
+const TokenType = acorn.TokenType
 
 function maybeParseFieldValue(field) {
   if (this.eat(tt.eq)) {
