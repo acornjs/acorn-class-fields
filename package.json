@@ -24,9 +24,9 @@
   "version": "0.1.2",
   "devDependencies": {
     "acorn": "^6.0.0",
-    "eslint": "^4.13.1",
-    "eslint-plugin-node": "^6.0.0",
-    "mocha": "^5.0.0",
+    "eslint": "^5.5.0",
+    "eslint-plugin-node": "^7.0.1",
+    "mocha": "^5.2.0",
     "test262": "git+https://github.com/tc39/test262.git#18c1e799a01cc976695983b61e225ce7959bdd91",
     "test262-parser-runner": "^0.3.1"
   }
