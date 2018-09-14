@@ -8,7 +8,7 @@ function test(text, expectedResult, additionalOptions) {
   it(text, function () {
     const result = Parser.parse(text, Object.assign({ ecmaVersion: 9 }, additionalOptions))
     if (expectedResult) {
-      assert.deepEqual(result.body[0], expectedResult)
+      assert.deepStrictEqual(result.body[0], expectedResult)
     }
   })
 }
@@ -18,12 +18,13 @@ function testFail(text, expectedResult, additionalOptions) {
     try {
       Parser.parse(text, Object.assign({ ecmaVersion: 9 }, additionalOptions))
     } catch (e) {
-      assert.equal(e.message, expectedResult)
+      assert.strictEqual(e.message, expectedResult)
       failed = true
     }
     assert(failed)
   })
 }
+const newNode = (start, props) => Object.assign(new acorn.Node({options: {}}, start), props)
 
 describe("acorn-class-fields", function () {
   test(`class Counter extends HTMLElement {
@@ -65,313 +66,268 @@ describe("acorn-class-fields", function () {
   const classes = [
     { text: "class A { %s }", ast: getBody => {
       const body = getBody(10)
-      return {
+      return newNode(0, {
         type: "ClassDeclaration",
-        start: 0,
         end: body.end + 2,
-        id: {
+        id: newNode(6, {
           type: "Identifier",
-          start: 6,
           end: 7,
           name: "A"
-        },
+        }),
         superClass: null,
-        body: {
+        body: newNode(8, {
           type: "ClassBody",
-          start: 8,
           end: body.end + 2,
           body: [body]
-        }
-      }
+        })
+      })
     } },
     { text: "class A { %s; }", ast: getBody => {
       const body = getBody(10)
-      return {
+      return newNode(0, {
         type: "ClassDeclaration",
-        start: 0,
         end: body.end + 3,
-        id: {
+        id: newNode(6, {
           type: "Identifier",
-          start: 6,
           end: 7,
           name: "A"
-        },
+        }),
         superClass: null,
-        body: {
+        body: newNode(8, {
           type: "ClassBody",
-          start: 8,
           end: body.end + 3,
           body: [body]
-        }
-      }
+        })
+      })
     } },
     { text: "class A { %s; #y }", ast: getBody => {
       const body = getBody(10)
-      return {
+      return newNode(0, {
         type: "ClassDeclaration",
-        start: 0,
         end: body.end + 6,
-        id: {
+        id: newNode(6, {
           type: "Identifier",
-          start: 6,
           end: 7,
           name: "A"
-        },
+        }),
         superClass: null,
-        body: {
+        body: newNode(8, {
           type: "ClassBody",
-          start: 8,
           end: body.end + 6,
-          body: [body, {
+          body: [body, newNode(body.end + 2, {
             type: "FieldDefinition",
-            start: body.end + 2,
             end: body.end + 4,
-            key: {
+            key: newNode(body.end + 2, {
               type: "PrivateName",
-              start: body.end + 2,
               end: body.end + 4,
               name: "y"
-            },
+            }),
             value: null,
             computed: false
-          } ]
-        }
-      }
+          }) ]
+        })
+      })
     } },
     { text: "class A { %s;a() {} }", ast: getBody => {
       const body = getBody(10)
-      return {
+      return newNode(0, {
         type: "ClassDeclaration",
-        start: 0,
         end: body.end + 9,
-        id: {
+        id: newNode(6, {
           type: "Identifier",
-          start: 6,
           end: 7,
           name: "A"
-        },
+        }),
         superClass: null,
-        body: {
+        body: newNode(8, {
           type: "ClassBody",
-          start: 8,
           end: body.end + 9,
-          body: [ body, {
+          body: [ body, newNode(body.end + 1, {
             type: "MethodDefinition",
-            start: body.end + 1,
             end: body.end + 7,
             kind: "method",
             static: false,
             computed: false,
-            key: {
+            key: newNode(body.end + 1, {
               type: "Identifier",
-              start: body.end + 1,
               end: body.end + 2,
               name: "a"
-            },
-            value: {
+            }),
+            value: newNode(body.end + 2, {
               type: "FunctionExpression",
-              start: body.end + 2,
               end: body.end + 7,
               id: null,
               generator: false,
               expression: false,
               async: false,
               params: [],
-              body: {
+              body: newNode(body.end + 5, {
                 type: "BlockStatement",
-                start: body.end + 5,
                 end: body.end + 7,
                 body: []
-              }
-            }
-          } ]
-        }
-      }
+              })
+            })
+          }) ]
+        })
+      })
     } },
     { text: "class A { %s\na() {} }", ast: getBody => {
       const body = getBody(10)
-      return {
+      return newNode(0, {
         type: "ClassDeclaration",
-        start: 0,
         end: body.end + 9,
-        id: {
+        id: newNode(6, {
           type: "Identifier",
-          start: 6,
           end: 7,
           name: "A"
-        },
+        }),
         superClass: null,
-        body: {
+        body: newNode(8, {
           type: "ClassBody",
-          start: 8,
           end: body.end + 9,
           body: [
             body,
-            {
+            newNode(body.end + 1, {
               type: "MethodDefinition",
-              start: body.end + 1,
               end: body.end + 7,
               kind: "method",
               static: false,
               computed: false,
-              key: {
+              key: newNode(body.end + 1, {
                 type: "Identifier",
-                start: body.end + 1,
                 end: body.end + 2,
                 name: "a"
-              },
-              value: {
+              }),
+              value: newNode(body.end + 2, {
                 type: "FunctionExpression",
-                start: body.end + 2,
                 end: body.end + 7,
                 id: null,
                 generator: false,
                 expression: false,
                 async: false,
                 params: [],
-                body: {
+                body: newNode(body.end + 5, {
                   type: "BlockStatement",
-                  start: body.end + 5,
                   end: body.end + 7,
                   body: []
-                }
-              }
-            }
+                })
+              })
+            })
           ]
-        }
-      }
+        })
+      })
     } },
   ];
 
   [
-    { body: "x", passes: true, ast: start => ({
+    { body: "x", passes: true, ast: start => newNode(start, {
       type: "FieldDefinition",
-      start: start,
       end: start + 1,
-      key: {
+      key: newNode(start, {
         type: "Identifier",
-        start: start,
         end: start + 1,
         name: "x"
-      },
+      }),
       value: null,
       computed: false
     }) },
-    { body: "x = 0", passes: true, ast: start => ({
+    { body: "x = 0", passes: true, ast: start => newNode(start, {
       type: "FieldDefinition",
-      start: start,
       end: start + 5,
-      key: {
+      key: newNode(start, {
         type: "Identifier",
-        start: start,
         end: start + 1,
         name: "x"
-      },
-      value: {
+      }),
+      value: newNode(start + 4, {
         type: "Literal",
-        start: start + 4,
         end: start + 5,
         value: 0,
         raw: "0"
-      },
+      }),
       computed: false
     }) },
-    { body: "[x]", passes: true, ast: start => ({
+    { body: "[x]", passes: true, ast: start => newNode(start, {
       type: "FieldDefinition",
-      start: start,
       end: start + 3,
       computed: true,
-      key: {
+      key: newNode(start + 1, {
         type: "Identifier",
-        start: start + 1,
         end: start + 2,
         name: "x"
-      },
+      }),
       value: null
     }) },
-    { body: "[x] = 0", passes: true, ast: start => ({
+    { body: "[x] = 0", passes: true, ast: start => newNode(start, {
       type: "FieldDefinition",
-      start: start,
       end: start + 7,
       computed: true,
-      key: {
+      key: newNode(start + 1, {
         type: "Identifier",
-        start: start + 1,
         end: start + 2,
         name: "x"
-      },
-      value: {
+      }),
+      value: newNode(start + 6, {
         type: "Literal",
-        start: start + 6,
         end: start + 7,
         value: 0,
         raw: "0"
-      }
+      })
     }) },
-    { body: "#x", passes: true, ast: start => ({
+    { body: "#x", passes: true, ast: start => newNode(start, {
       type: "FieldDefinition",
-      start: start,
       end: start + 2,
       computed: false,
-      key: {
+      key: newNode(start, {
         type: "PrivateName",
-        start: start,
         end: start + 2,
         name: "x"
-      },
+      }),
       value: null,
     }) },
-    { body: "#x = 0", passes: true, ast: start => ({
+    { body: "#x = 0", passes: true, ast: start => newNode(start, {
       type: "FieldDefinition",
-      start: start,
       end: start + 6,
       computed: false,
-      key: {
+      key: newNode(start, {
         type: "PrivateName",
-        start: start,
         end: start + 2,
         name: "x"
-      },
-      value: {
+      }),
+      value: newNode(start + 5, {
         type: "Literal",
-        start: start + 5,
         end: start + 6,
         value: 0,
         raw: "0"
-      }
+      })
     }) },
 
-    { body: "async", passes: true, ast: start => ({
+    { body: "async", passes: true, ast: start => newNode(start, {
       type: "FieldDefinition",
-      start: start,
       end: start + 5,
-      key: {
+      key: newNode(start, {
         type: "Identifier",
-        start: start,
         end: start + 5,
         name: "async"
-      },
+      }),
       value: null,
       computed: false
     }) },
 
-    { body: "async = 5", passes: true, ast: start => ({
+    { body: "async = 5", passes: true, ast: start => newNode(start, {
       type: "FieldDefinition",
-      start: start,
       end: start + 9,
-      key: {
+      key: newNode(start, {
         type: "Identifier",
-        start: start,
         end: start + 5,
         name: "async"
-      },
-      value: {
+      }),
+      value: newNode(start + 8, {
         type: "Literal",
-        start: 18,
-        end: 19,
+        end: start + 9,
         raw: "5",
         value: 5
-      },
+      }),
       computed: false
     }) },
   ].forEach(bodyInput => {
