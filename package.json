@@ -27,7 +27,7 @@
     "eslint": "^5.5.0",
     "eslint-plugin-node": "^7.0.1",
     "mocha": "^5.2.0",
-    "test262": "git+https://github.com/tc39/test262.git#18c1e799a01cc976695983b61e225ce7959bdd91",
-    "test262-parser-runner": "^0.3.1"
+    "test262": "git+https://github.com/tc39/test262.git#e286bfa00086226f781a3ed4e0a6295634b8ed11",
+    "test262-parser-runner": "^0.4.0"
   }
 }
