@@ -222,7 +222,7 @@
         "no-useless-return": "error",
         "no-var": "error",
         "no-void": "error",
-        "no-warning-comments": "error",
+        "no-warning-comments": "warn",
         "no-whitespace-before-property": "error",
         "no-with": "error",
         "nonblock-statement-body-position": [
@@ -245,7 +245,7 @@
         "prefer-numeric-literals": "error",
         "prefer-promise-reject-errors": "error",
         "prefer-reflect": "off",
-        "prefer-rest-params": "error",
+        "prefer-rest-params": "off",
         "prefer-spread": "error",
         "prefer-template": "error",
         "quote-props": ["error", "as-needed"],

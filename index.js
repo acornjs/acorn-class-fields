@@ -60,7 +60,7 @@ module.exports = function(Parser) {
     }
 
     // Parse private fields
-    parseClassElement() {
+    parseClassElement(_constructorAllowsSuper) {
       if (this.eat(tt.semi)) return null
       const node = this.startNode()
       if (!(this.options.ecmaVersion >= 8) || this.type != privateNameToken) {
@@ -79,7 +79,7 @@ module.exports = function(Parser) {
             return node
           }
         }
-        return super.parseClassElement()
+        return super.parseClassElement.apply(this, arguments)
       }
       node.key = parsePrivateName.call(this)
       node.computed = false
@@ -94,9 +94,9 @@ module.exports = function(Parser) {
     }
 
     // Parse public fields
-    parseClassMethod(method, isGenerator, isAsync) {
+    parseClassMethod(method, isGenerator, isAsync, _allowsDirectSuper) {
       if (isGenerator || isAsync || method.kind != "method" || method.static || this.options.ecmaVersion < 8 || this.type == tt.parenL) {
-        return super.parseClassMethod(method, isGenerator, isAsync)
+        return super.parseClassMethod.apply(this, arguments)
       }
       maybeParseFieldValue.call(this, method)
       delete method.kind
@@ -150,6 +150,7 @@ module.exports = function(Parser) {
     }
 
     // Prohibit super in class field initializers
+    // FIXME: This is not necessary in acorn >= 6.0.3
     parseExprAtom(refDestructuringErrors) {
       const atom = super.parseExprAtom(refDestructuringErrors)
       if (this._inFieldValue && atom.type == "Super") this.raise(atom.start, "A class field initializer may not contain super")
