@@ -14,14 +14,13 @@ function test(text, expectedResult, additionalOptions) {
 }
 function testFail(text, expectedResult, additionalOptions) {
   it(text, function () {
-    let failed = false
+    let msg = null
     try {
       Parser.parse(text, Object.assign({ ecmaVersion: 9 }, additionalOptions))
     } catch (e) {
-      assert.strictEqual(e.message, expectedResult)
-      failed = true
+      msg = e.message
     }
-    assert(failed)
+    assert.strictEqual(msg, expectedResult)
   })
 }
 const newNode = (start, props) => Object.assign(new acorn.Node({options: {}}, start), props)
