@@ -23,11 +23,14 @@
   },
   "version": "0.2.1",
   "devDependencies": {
-    "acorn": "^6.0.4",
+    "acorn": "^6.1.0",
     "eslint": "^5.5.0",
     "eslint-plugin-node": "^8.0.0",
     "mocha": "^5.2.0",
     "test262": "git+https://github.com/tc39/test262.git#c0ffc8f6da0f2a7ec87afb87ec5f2664b1ba57ec",
     "test262-parser-runner": "^0.4.0"
+  },
+  "dependencies": {
+    "acorn-private-class-elements": "^0.1.0"
   }
 }
