@@ -55,11 +55,11 @@ describe("acorn-class-fields", function () {
   testFail("class A { #a; #a }", "Duplicate private element (1:14)")
   testFail("class A { a = this.#a }", "Usage of undeclared private name (1:19)")
   testFail("class A { a = this.#a; b = this.#b }", "Usage of undeclared private name (1:19)")
-  testFail("class A { constructor = 4 }", "Unexpected token (1:22)")
+  testFail("class A { constructor = 4 }", "Classes may not have a field called constructor (1:10)")
   testFail("class A { #constructor = 4 }", "Classes may not have a private element named constructor (1:10)")
   testFail("class A { a = () => arguments }", "A class field initializer may not contain arguments (1:20)")
   testFail("class A { a = () => super() }", "'super' keyword outside a method (1:20)")
-  testFail("class A { # a }", "Unexpected token (1:12)")
+  testFail("class A { # a }", "Unexpected token (1:10)")
   testFail("class A { #a; a() { this.# a } }", "Unexpected token (1:27)")
 
   const classes = [

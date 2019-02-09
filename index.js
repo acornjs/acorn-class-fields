@@ -18,46 +18,37 @@ function maybeParseFieldValue(field) {
 module.exports = function(Parser) {
   Parser = privateClassElements(Parser)
   return class extends Parser {
-    // Parse private fields
+    // Parse fields
     parseClassElement(_constructorAllowsSuper) {
-      if (this.eat(tt.semi)) return null
-      const node = this.startNode()
-      if (!(this.options.ecmaVersion >= 8) || this.type != this.privateNameToken) {
-        // Special-case for `async`, since `parseClassMember` currently looks
-        // for `(` to determine whether `async` is a method name
-        if (this.isContextual("async")) {
-          skipWhiteSpace.lastIndex = this.pos
-          let skip = skipWhiteSpace.exec(this.input)
-          let next = this.input.charAt(this.pos + skip[0].length)
-          if (next === ";" || next === "=") {
-            node.key = this.parseIdent(true)
-            node.computed = false
-            maybeParseFieldValue.call(this, node)
-            this.finishNode(node, "FieldDefinition")
-            this.semicolon()
-            return node
+      if (this.options.ecmaVersion >= 8 && (this.type == tt.name || this.type == this.privateNameToken || this.type == tt.bracketL || this.type == tt.string)) {
+        const branch = this._branch()
+        if (branch.type == tt.bracketL) {
+          let count = 0
+          do {
+            if (branch.eat(tt.bracketL)) ++count
+            else if (branch.eat(tt.bracketR)) --count
+            else branch.next()
+          } while (count > 0)
+        } else branch.next()
+        if (branch.type == tt.eq || branch.canInsertSemicolon() || branch.type == tt.semi) {
+          const node = this.startNode()
+          if (this.type == this.privateNameToken) {
+            this.parsePrivateClassElementName(node)
+          } else {
+            this.parsePropertyName(node)
           }
+          if ((node.key.type === "Identifier" && node.key.name === "constructor") ||
+              (node.key.type === "Literal" && node.key.value === "constructor")) {
+            this.raise(node.key.start, "Classes may not have a field called constructor")
+          }
+          maybeParseFieldValue.call(this, node)
+          this.finishNode(node, "FieldDefinition")
+          this.semicolon()
+          return node
         }
-        return super.parseClassElement.apply(this, arguments)
       }
-      this.parsePrivateClassElementName(node)
-      maybeParseFieldValue.call(this, node)
-      this.finishNode(node, "FieldDefinition")
-      this.semicolon()
-      return node
-    }
 
-    // Parse public fields
-    parseClassMethod(method, isGenerator, isAsync, _allowsDirectSuper) {
-      if (isGenerator || isAsync || method.kind != "method" || method.static || this.options.ecmaVersion < 8 || this.type == tt.parenL) {
-        return super.parseClassMethod.apply(this, arguments)
-      }
-      maybeParseFieldValue.call(this, method)
-      delete method.kind
-      delete method.static
-      method = this.finishNode(method, "FieldDefinition")
-      this.semicolon()
-      return method
+      return super.parseClassElement.apply(this, arguments)
     }
 
     // Prohibit arguments in class field initializers
