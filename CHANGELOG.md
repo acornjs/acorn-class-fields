@@ -1,3 +1,7 @@
+## 0.3.1 (2019-02-09)
+
+* Restore compatibility with acorn-private-methods
+
 ## 0.3.0 (2019-02-09)
 
 * Require acorn >= 6.1.0
