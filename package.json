@@ -19,7 +19,7 @@
     "lint": "eslint -c .eslintrc.json ."
   },
   "peerDependencies": {
-    "acorn": "^6.0.0"
+    "acorn": "^6.0.0 || ^7.0.0"
   },
   "version": "0.3.1",
   "devDependencies": {
