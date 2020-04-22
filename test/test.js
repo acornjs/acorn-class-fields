@@ -26,6 +26,10 @@ function testFail(text, expectedResult, additionalOptions) {
 const newNode = (start, props) => Object.assign(new acorn.Node({options: {}}, start), props)
 
 describe("acorn-class-fields", function () {
+  test(`class P extends Q {
+    x = super.x
+  }`)
+
   test(`class Counter extends HTMLElement {
     x = 0;
 
@@ -37,6 +41,22 @@ describe("acorn-class-fields", function () {
       return this.x.toString();
     }
   }`)
+
+  test(`
+    class AsyncIterPipe{
+      static get [ Symbol.species](){
+        return Promise
+      }
+      static get Closing(){
+        return Closing
+      }
+      static get controllerSignals(){ return controllerSignals}
+      static get listenerBinding(){ return listenerBinding}
+    
+      // state
+      done= false
+    }
+  `)
 
   test(`class Counter extends HTMLElement {
     #x = 0;
@@ -58,7 +78,7 @@ describe("acorn-class-fields", function () {
   testFail("class A { constructor = 4 }", "Classes may not have a field called constructor (1:10)")
   testFail("class A { #constructor = 4 }", "Classes may not have a private element named constructor (1:10)")
   testFail("class A { a = () => arguments }", "A class field initializer may not contain arguments (1:20)")
-  testFail("class A { a = () => super() }", "'super' keyword outside a method (1:20)")
+  testFail("class A { a = () => super() }", "super() call outside constructor of a subclass (1:20)")
   testFail("class A { # a }", "Unexpected token (1:10)")
   testFail("class A { #a; a() { this.# a } }", "Unexpected token (1:27)")
 

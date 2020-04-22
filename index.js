@@ -41,7 +41,9 @@ module.exports = function(Parser) {
               (node.key.type === "Literal" && node.key.value === "constructor")) {
             this.raise(node.key.start, "Classes may not have a field called constructor")
           }
+          this.enterScope(67);
           maybeParseFieldValue.call(this, node)
+          this.exitScope();
           this.finishNode(node, "FieldDefinition")
           this.semicolon()
           return node
