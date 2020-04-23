@@ -1,21 +1,22 @@
 "use strict"
 
-const acorn = require("acorn")
-const tt = acorn.tokTypes
 const privateClassElements = require("acorn-private-class-elements")
 
-function maybeParseFieldValue(field) {
-  if (this.eat(tt.eq)) {
-    const oldInFieldValue = this._inFieldValue
-    this._inFieldValue = true
-    field.value = this.parseExpression()
-    this._inFieldValue = oldInFieldValue
-  } else field.value = null
-}
-
 module.exports = function(Parser) {
+  const acorn = Parser.acorn || require("acorn")
+  const tt = acorn.tokTypes
+
   Parser = privateClassElements(Parser)
   return class extends Parser {
+    _maybeParseFieldValue(field) {
+      if (this.eat(tt.eq)) {
+        const oldInFieldValue = this._inFieldValue
+        this._inFieldValue = true
+        field.value = this.parseExpression()
+        this._inFieldValue = oldInFieldValue
+      } else field.value = null
+    }
+
     // Parse fields
     parseClassElement(_constructorAllowsSuper) {
       if (this.options.ecmaVersion >= 8 && (this.type == tt.name || this.type == this.privateNameToken || this.type == tt.bracketL || this.type == tt.string)) {
@@ -40,7 +41,7 @@ module.exports = function(Parser) {
             this.raise(node.key.start, "Classes may not have a field called constructor")
           }
           this.enterScope(64 | 2 | 1) // See acorn's scopeflags.js
-          maybeParseFieldValue.call(this, node)
+          this._maybeParseFieldValue(node)
           this.exitScope()
           this.finishNode(node, "FieldDefinition")
           this.semicolon()
