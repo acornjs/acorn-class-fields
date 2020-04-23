@@ -52,7 +52,7 @@ describe("acorn-class-fields", function () {
       }
       static get controllerSignals(){ return controllerSignals}
       static get listenerBinding(){ return listenerBinding}
-    
+
       // state
       done= false
     }
