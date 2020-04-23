@@ -39,7 +39,7 @@ module.exports = function(Parser) {
               (node.key.type === "Literal" && node.key.value === "constructor")) {
             this.raise(node.key.start, "Classes may not have a field called constructor")
           }
-          this.enterScope(67)
+          this.enterScope(64 | 2 | 1) // See acorn's scopeflags.js
           maybeParseFieldValue.call(this, node)
           this.exitScope()
           this.finishNode(node, "FieldDefinition")
