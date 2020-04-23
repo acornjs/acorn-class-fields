@@ -1,3 +1,12 @@
+## 0.3.2 (2020-04-24)
+
+* Make compatible with acorn@7
+* Use injected acorn instance if available
+* Evaluate class heritage with outer private environment
+* Don't allow private element access on `super`
+* Uses `Object.getPrototypeOf` if available instead of `__proto__`
+* Fix usage of super in field initializers
+
 ## 0.3.1 (2019-02-09)
 
 * Restore compatibility with acorn-private-methods
