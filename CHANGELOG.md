@@ -1,3 +1,7 @@
+## 0.3.3 (2020-05-20)
+
+* Support numeric field names
+
 ## 0.3.2 (2020-04-24)
 
 * Make compatible with acorn@7
