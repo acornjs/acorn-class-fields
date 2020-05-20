@@ -19,7 +19,7 @@ module.exports = function(Parser) {
 
     // Parse fields
     parseClassElement(_constructorAllowsSuper) {
-      if (this.options.ecmaVersion >= 8 && (this.type == tt.name || this.type == this.privateNameToken || this.type == tt.bracketL || this.type == tt.string)) {
+      if (this.options.ecmaVersion >= 8 && (this.type == tt.name || this.type == this.privateNameToken || this.type == tt.bracketL || this.type == tt.string || this.type == tt.num)) {
         const branch = this._branch()
         if (branch.type == tt.bracketL) {
           let count = 0
