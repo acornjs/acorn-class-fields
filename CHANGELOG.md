@@ -1,3 +1,7 @@
+## 0.3.4 (2020-05-21)
+
+* Allow keyword field names
+
 ## 0.3.3 (2020-05-20)
 
 * Support numeric field names

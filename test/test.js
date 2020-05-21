@@ -70,7 +70,7 @@ describe("acorn-class-fields", function () {
     }
   }`)
   test("class A { a = this.#a; #a = 4 }")
-  
+
   test("class A { 5 = 5; #5 = 5 }")
   test("class A { delete = 5; #delete = 5 }")
 
