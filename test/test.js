@@ -70,6 +70,9 @@ describe("acorn-class-fields", function () {
     }
   }`)
   test("class A { a = this.#a; #a = 4 }")
+  
+  test("class A { 5 = 5; #5 = 5 }")
+  test("class A { delete = 5; #delete = 5 }")
 
   testFail("class A { #a; f() { delete this.#a } }", "Private elements may not be deleted (1:20)")
   testFail("class A { #a; #a }", "Duplicate private element (1:14)")
