@@ -1,3 +1,7 @@
+## 0.3.6 (2020-06-11)
+
+* Don't break acorn's optional chaining support
+
 ## 0.3.5 (2020-06-11)
 
 * Don't break keyword method names
