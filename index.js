@@ -28,7 +28,7 @@ module.exports = function(Parser) {
             else if (branch.eat(tt.bracketR)) --count
             else branch.next()
           } while (count > 0)
-        } else branch.next()
+        } else branch.next(true)
         if (branch.type == tt.eq || branch.canInsertSemicolon() || branch.type == tt.semi) {
           const node = this.startNode()
           if (this.type == this.privateNameToken) {
