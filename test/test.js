@@ -6,7 +6,7 @@ const Parser = acorn.Parser.extend(classFields)
 
 function test(text, expectedResult, additionalOptions) {
   it(text, function () {
-    const result = Parser.parse(text, Object.assign({ ecmaVersion: 9 }, additionalOptions))
+    const result = Parser.parse(text, Object.assign({ ecmaVersion: 9, allowAwaitOutsideFunction: true }, additionalOptions))
     if (expectedResult) {
       assert.deepStrictEqual(result.body[0], expectedResult)
     }
@@ -55,6 +55,12 @@ describe("acorn-class-fields", function () {
 
       // state
       done= false
+    }
+  `)
+
+  test(`
+    class Class {
+      value = await getValue();
     }
   `)
 

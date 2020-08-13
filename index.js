@@ -12,7 +12,9 @@ module.exports = function(Parser) {
       if (this.eat(tt.eq)) {
         const oldInFieldValue = this._inFieldValue
         this._inFieldValue = true
-        field.value = this.parseExpression()
+        if (this.type === tt.name && this.value === 'await' && (this.inAsync || this.options.allowAwaitOutsideFunction)) {
+          field.value = this.parseAwait()
+        } else field.value = this.parseExpression()
         this._inFieldValue = oldInFieldValue
       } else field.value = null
     }
