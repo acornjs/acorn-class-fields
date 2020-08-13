@@ -369,5 +369,21 @@ describe("acorn-class-fields", function () {
   testFail("class C { \\u0061sync m(){} };", "Unexpected token (1:21)")
   test("class A extends B { constructor() { super() } }")
   test("var C = class { bre\\u0061k() { return 42; }}")
-
+  test(`class X {
+      x
+      () {}
+  }`)
+  test(`class X {
+      static x
+      () {}
+  }`)
+  test(`class X {
+      get
+      y() {}
+  }`)
+  test(`class X {
+      static;
+      async;
+      y() {}
+  }`)
 })

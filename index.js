@@ -31,7 +31,11 @@ module.exports = function(Parser) {
             else branch.next()
           } while (count > 0)
         } else branch.next(true)
-        if (branch.type == tt.eq || branch.canInsertSemicolon() || branch.type == tt.semi) {
+        let isField = branch.type == tt.eq || branch.type == tt.semi
+        if (!isField && branch.canInsertSemicolon()) {
+          isField = branch.type != tt.parenL
+        }
+        if (isField) {
           const node = this.startNode()
           if (this.type == this.privateNameToken) {
             this.parsePrivateClassElementName(node)
