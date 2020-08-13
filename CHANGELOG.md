@@ -1,3 +1,9 @@
+## 0.3.7 (2020-08-13)
+
+* Don't break methods with line break after name
+* Mark as compatible with acorn@8
+* Support await in field initializers
+
 ## 0.3.6 (2020-06-11)
 
 * Don't break acorn's optional chaining support
