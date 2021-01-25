@@ -4,7 +4,7 @@
 
 This is a plugin for [Acorn](http://marijnhaverbeke.nl/acorn/) - a tiny, fast JavaScript parser, written completely in JavaScript.
 
-It implements support for class fields as defined in the stage 3 proposal [Class field declarations for JavaScript](https://github.com/tc39/proposal-class-fields). The emitted AST follows [an ESTree proposal](https://github.com/estree/estree/pull/180).
+It implements support for class fields as defined in the stage 3 proposal [Class field declarations for JavaScript](https://github.com/tc39/proposal-class-fields). The emitted AST follows the [ESTree experimental Class Features design](https://github.com/estree/estree/blob/master/experimental/class-features.md).
 
 ## Usage
 

@@ -21,7 +21,7 @@ module.exports = function(Parser) {
 
     // Parse fields
     parseClassElement(_constructorAllowsSuper) {
-      if (this.options.ecmaVersion >= 8 && (this.type == tt.name || this.type.keyword || this.type == this.privateNameToken || this.type == tt.bracketL || this.type == tt.string || this.type == tt.num)) {
+      if (this.options.ecmaVersion >= 8 && (this.type == tt.name || this.type.keyword || this.type == this.privateIdentifierToken || this.type == tt.bracketL || this.type == tt.string || this.type == tt.num)) {
         const branch = this._branch()
         if (branch.type == tt.bracketL) {
           let count = 0
@@ -37,7 +37,7 @@ module.exports = function(Parser) {
         }
         if (isField) {
           const node = this.startNode()
-          if (this.type == this.privateNameToken) {
+          if (this.type == this.privateIdentifierToken) {
             this.parsePrivateClassElementName(node)
           } else {
             this.parsePropertyName(node)
@@ -49,7 +49,7 @@ module.exports = function(Parser) {
           this.enterScope(64 | 2 | 1) // See acorn's scopeflags.js
           this._maybeParseFieldValue(node)
           this.exitScope()
-          this.finishNode(node, "FieldDefinition")
+          this.finishNode(node, "PropertyDefinition")
           this.semicolon()
           return node
         }

@@ -143,10 +143,10 @@ describe("acorn-class-fields", function () {
           type: "ClassBody",
           end: body.end + 6,
           body: [body, newNode(body.end + 2, {
-            type: "FieldDefinition",
+            type: "PropertyDefinition",
             end: body.end + 4,
             key: newNode(body.end + 2, {
-              type: "PrivateName",
+              type: "PrivateIdentifier",
               end: body.end + 4,
               name: "y"
             }),
@@ -249,7 +249,7 @@ describe("acorn-class-fields", function () {
 
   [
     { body: "x", passes: true, ast: start => newNode(start, {
-      type: "FieldDefinition",
+      type: "PropertyDefinition",
       end: start + 1,
       key: newNode(start, {
         type: "Identifier",
@@ -260,7 +260,7 @@ describe("acorn-class-fields", function () {
       computed: false
     }) },
     { body: "x = 0", passes: true, ast: start => newNode(start, {
-      type: "FieldDefinition",
+      type: "PropertyDefinition",
       end: start + 5,
       key: newNode(start, {
         type: "Identifier",
@@ -276,7 +276,7 @@ describe("acorn-class-fields", function () {
       computed: false
     }) },
     { body: "[x]", passes: true, ast: start => newNode(start, {
-      type: "FieldDefinition",
+      type: "PropertyDefinition",
       end: start + 3,
       computed: true,
       key: newNode(start + 1, {
@@ -287,7 +287,7 @@ describe("acorn-class-fields", function () {
       value: null
     }) },
     { body: "[x] = 0", passes: true, ast: start => newNode(start, {
-      type: "FieldDefinition",
+      type: "PropertyDefinition",
       end: start + 7,
       computed: true,
       key: newNode(start + 1, {
@@ -303,22 +303,22 @@ describe("acorn-class-fields", function () {
       })
     }) },
     { body: "#x", passes: true, ast: start => newNode(start, {
-      type: "FieldDefinition",
+      type: "PropertyDefinition",
       end: start + 2,
       computed: false,
       key: newNode(start, {
-        type: "PrivateName",
+        type: "PrivateIdentifier",
         end: start + 2,
         name: "x"
       }),
       value: null,
     }) },
     { body: "#x = 0", passes: true, ast: start => newNode(start, {
-      type: "FieldDefinition",
+      type: "PropertyDefinition",
       end: start + 6,
       computed: false,
       key: newNode(start, {
-        type: "PrivateName",
+        type: "PrivateIdentifier",
         end: start + 2,
         name: "x"
       }),
@@ -331,7 +331,7 @@ describe("acorn-class-fields", function () {
     }) },
 
     { body: "async", passes: true, ast: start => newNode(start, {
-      type: "FieldDefinition",
+      type: "PropertyDefinition",
       end: start + 5,
       key: newNode(start, {
         type: "Identifier",
@@ -343,7 +343,7 @@ describe("acorn-class-fields", function () {
     }) },
 
     { body: "async = 5", passes: true, ast: start => newNode(start, {
-      type: "FieldDefinition",
+      type: "PropertyDefinition",
       end: start + 9,
       key: newNode(start, {
         type: "Identifier",
