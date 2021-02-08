@@ -1,3 +1,7 @@
+## 1.0.0 (2021-02-08)
+
+* Update AST node names to match [ESTree](https://github.com/estree/estree/blob/master/experimental/class-features.md)
+
 ## 0.3.7 (2020-08-13)
 
 * Don't break methods with line break after name
